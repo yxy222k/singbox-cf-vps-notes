@@ -1,0 +1,10 @@
+[Unit]
+Description=Port 8443 accepts Cloudflare + loopback only (nftables table inet cf8443)
+After=network-pre.target
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/cf8443-firewall.sh apply
+ExecStop=/usr/local/sbin/cf8443-firewall.sh remove
+[Install]
+WantedBy=multi-user.target

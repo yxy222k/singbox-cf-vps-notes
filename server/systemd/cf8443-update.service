@@ -1,0 +1,7 @@
+[Unit]
+Description=Refresh the Cloudflare ranges for the 8443 firewall
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cf8443-firewall.sh update
