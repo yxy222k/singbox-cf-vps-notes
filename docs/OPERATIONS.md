@@ -1154,6 +1154,7 @@ python 补丁失败、`check` 失败、重启失败、重启后不 active 四处
 | `/etc/ssl/singbox-ws/cert.pem`（`CN=localhost`）、`*.pem.bak.20261008172358` | WS 入站自签证书；旧证书（CN=node.example.com）的备份 |
 | `/root/.local/share/claude/versions/2.1.294`、`/root/.local/bin/claude` | Claude Code（原生安装器，10-08 装；自动更新开着）。原先「装失败」实为 `~/.local/bin` 不在 PATH，已在 `/root/.bashrc` 末尾补上（备份 `.bashrc.bak.*`）；已登录，凭证在 `/root/.claude/.credentials.json` |
 | `/etc/sysctl.d/99-singbox-tuning.conf` | BBR/fq 调优 |
+| `/swapfile`（2 GiB，0600）+ `/etc/fstab` 一行、`/etc/sysctl.d/99-swap.conf`（`vm.swappiness=10`） | 交换文件（10-10），防内存突增 OOM 掉 sing-box；fstab 改前备份 `.bak.*` |
 | `/etc/modules-load.d/singbox-bbr.conf` | BBR 模块开机加载 |
 
 ### 10.2 本机 `F:\vps\`

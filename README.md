@@ -16,6 +16,7 @@
 | [server/cf8443-firewall.sh](server/cf8443-firewall.sh) | nftables：8443 只接受 Cloudflare IP 段 + 本机回环 |
 | [server/systemd/](server/systemd/) | sing-box 与防火墙的 systemd unit / timer |
 | [server/99-singbox-tuning.conf](server/99-singbox-tuning.conf) | BBR + fq 内核调优 |
+| [server/99-swap.conf](server/99-swap.conf) | `vm.swappiness=10`（配 2 GiB `/swapfile`，做法见 OPERATIONS.md 文件表） |
 
 ## 脱敏说明
 

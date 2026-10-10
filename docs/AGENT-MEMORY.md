@@ -1,4 +1,4 @@
-# 这台 VPS 的工作记忆（由用户本机的 Claude 于 2026-10-08 整理，2026-10-09 最后更新）
+# 这台 VPS 的工作记忆（由用户本机的 Claude 于 2026-10-08 整理，2026-10-10 最后更新）
 
 用中文回答。动手前先看现状，改动前先备份，结论以实际命令输出为准，不要凭推测说"已完成"。
 
@@ -26,6 +26,9 @@
 - 路由规则（自上而下）：`fwd-*` 入站 → direct；sniff；`geosite-cn` → reject；`geoip-cn` → reject；最终 direct。
   规则集是**本地文件** `/etc/sing-box/rules/{geosite,geoip}-cn.srs`（remote 规则集下载失败会让 sing-box 起不来）。
 - 内核调优 `/etc/sysctl.d/99-singbox-tuning.conf`（BBR + fq）。ufw 没开；唯一的防火墙规则是上面那张 `inet cf8443` 表。
+- Swap（10-10 起）：2 GiB 交换文件 `/swapfile`（0600），`/etc/fstab` 里 `/swapfile none swap sw 0 0` 开机挂载（改前备份 `fstab.bak.*`）；
+  `vm.swappiness=10` 写在 `/etc/sysctl.d/99-swap.conf`。只是防内存突增把 sing-box OOM 掉的保险，平时用量应接近 0。
+  撤销：`swapoff /swapfile && rm /swapfile`，删 fstab 那行和 `99-swap.conf`。
 - 证书原 CN=`node.example.com`（会让直连者看到域名），10-08 换成 `localhost`；CF 用 SSL Full 模式不校验源站证书，名字随意，**别换回带域名的**。
 
 ## 三、用户是怎么连进来的（改错就会把用户锁在外面）
@@ -108,5 +111,5 @@
 3. 各客户端的 `known_hosts` 按 IP 记录主机指纹，换 IP 后首次连接会再问一次（主机密钥不变，指纹同上）。
 4. 同时轮换 Reality keypair / UUID / shortId（见第七节）。
 
-**今天的状态（10-09）**：sing-box、cloudflared、`cf8443-firewall` 全部正常；sshd 仅密钥；两把钥匙（Windows、Mac）都验证过。
+**今天的状态（10-10）**：sing-box、cloudflared、`cf8443-firewall` 全部正常；sshd 仅密钥；两把钥匙（Windows、Mac）都验证过；2 GiB swap 已启用。
 
